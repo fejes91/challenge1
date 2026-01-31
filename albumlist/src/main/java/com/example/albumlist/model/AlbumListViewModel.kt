@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.model.Album
 import com.example.domain.repository.AlbumRepository
 import com.example.navigation.Navigator
+import com.example.navigation.route.AlbumDetailsScreenRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,6 +35,10 @@ class AlbumListViewModel @Inject constructor(
         viewModelScope.launch {
             albumRepository.saveAlbum(albumId)
         }
+    }
+
+    fun onSelect(albumId: String) {
+        navigator.navigateTo(AlbumDetailsScreenRoute(albumId))
     }
 }
 

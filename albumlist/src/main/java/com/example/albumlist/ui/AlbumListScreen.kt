@@ -2,6 +2,7 @@ package com.example.albumlist.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,23 +44,27 @@ import com.example.domain.model.Album
 fun AlbumListScreen(viewModel: AlbumListViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    AlbumListScreenContent(uiState, viewModel::onSave)
+    AlbumListScreenContent(uiState, viewModel::onSave, viewModel::onSelect)
 }
 
 @Composable
-private fun AlbumListScreenContent(uiState: UiState, onSave: (String) -> Unit) {
+private fun AlbumListScreenContent(
+    uiState: UiState,
+    onSave: (String) -> Unit,
+    onSelect: (String) -> Unit
+) {
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         when (uiState) {
             is Idle -> {}
             is Loading -> CircularProgressIndicator()
             is Error -> Text(uiState.message, style = MaterialTheme.typography.labelLarge)
-            is Results -> AlbumList(uiState.albums, onSave)
+            is Results -> AlbumList(uiState.albums, onSave, onSelect)
         }
     }
 }
 
 @Composable
-private fun AlbumList(albums: List<Album>, onSave: (String) -> Unit) {
+private fun AlbumList(albums: List<Album>, onSave: (String) -> Unit, onSelect: (String) -> Unit) {
     Column(
         Modifier
             .fillMaxSize()
@@ -69,18 +74,30 @@ private fun AlbumList(albums: List<Album>, onSave: (String) -> Unit) {
             stringResource(R.string.albumlist_title),
             style = MaterialTheme.typography.titleLarge
         )
-        LazyColumn(Modifier.fillMaxSize().padding(top = 32.dp), verticalArrangement = Arrangement.spacedBy(13.dp)) {
+        LazyColumn(
+            Modifier
+                .fillMaxSize()
+                .padding(top = 32.dp),
+            verticalArrangement = Arrangement.spacedBy(13.dp)
+        ) {
             items(albums.size) { index ->
-                AlbumItem(albums[index], index, onSave)
+                AlbumItem(albums[index], index, onSave, onSelect)
             }
         }
     }
 }
 
 @Composable
-private fun AlbumItem(album: Album, index: Int, onSave: (String) -> Unit) {
+private fun AlbumItem(
+    album: Album,
+    index: Int,
+    onSave: (String) -> Unit,
+    onSelect: (String) -> Unit
+) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onSelect(album.id) },
         shape = CardDefaults.elevatedShape
     ) {
         Row(Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -113,5 +130,5 @@ private fun AlbumItem(album: Album, index: Int, onSave: (String) -> Unit) {
 @Preview
 private fun AlbumListScreenPreview() {
 
-    AlbumListScreenContent(Loading, {})
+    AlbumListScreenContent(Loading, {}, {})
 }
