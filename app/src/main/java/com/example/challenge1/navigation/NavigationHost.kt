@@ -35,7 +35,7 @@ fun NavigationHost(viewModel: NavigatorViewModel = hiltViewModel()) {
                 }
 
                 is AlbumDetailsScreenRoute -> NavEntry(key) {
-                    AlbumDetailsScreen(key.id)
+                    AlbumDetailsScreen()
                 }
             }
         }

@@ -50,7 +50,6 @@ class AlbumListViewModel @Inject constructor(
 }
 
 sealed interface UiState
-
 object Idle : UiState
 object Loading : UiState
 data class Error(val message: String) : UiState

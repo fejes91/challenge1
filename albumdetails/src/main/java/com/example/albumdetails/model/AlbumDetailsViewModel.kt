@@ -1,30 +1,26 @@
 package com.example.albumdetails.model
 
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.repository.AlbumRepository
+import com.example.navigation.Navigator
+import com.example.navigation.route.AlbumDetailsScreenRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
 class AlbumDetailsViewModel @Inject constructor(
+    navigator: Navigator,
     albumRepository: AlbumRepository
 ) : ViewModel() {
-    private val albumId = MutableStateFlow<String?>(null)
 
-    val album = albumId.filterNotNull().flatMapLatest { albumRepository.getAlbumById(it) }.stateIn(
+    private val route = navigator.currentRoute() as? AlbumDetailsScreenRoute
+    val album = albumRepository.getAlbumById(route?.id ?: "").stateIn(
         viewModelScope,
         SharingStarted.Lazily,
         null
     )
 
-    fun initialize(albumId: String) {
-        this.albumId.value = albumId
-    }
 }

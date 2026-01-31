@@ -2,7 +2,6 @@ package com.example.albumdetails.ui
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -11,11 +10,7 @@ import com.example.albumdetails.model.AlbumDetailsViewModel
 import com.example.domain.model.Album
 
 @Composable
-fun AlbumDetailsScreen(albumId: String, viewModel: AlbumDetailsViewModel = hiltViewModel()) {
-    LaunchedEffect(Unit) {
-        viewModel.initialize(albumId)
-    }
-
+fun AlbumDetailsScreen(viewModel: AlbumDetailsViewModel = hiltViewModel()) {
     val album by viewModel.album.collectAsStateWithLifecycle()
 
     AlbumDetailsScreenContent(album)
