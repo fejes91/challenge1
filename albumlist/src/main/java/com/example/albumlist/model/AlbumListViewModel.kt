@@ -8,7 +8,10 @@ import com.example.navigation.Navigator
 import com.example.navigation.route.AlbumDetailsScreenRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,11 +23,15 @@ class AlbumListViewModel @Inject constructor(
     private val uiStateFlow = MutableStateFlow<UiState>(Idle)
     val uiState = uiStateFlow.asStateFlow()
 
+    val albums = albumRepository.getAlbumList()
+        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+
     init {
         viewModelScope.launch {
             try {
                 uiStateFlow.value = Loading
-                uiStateFlow.value = Results(albumRepository.fetchAlbumList())
+                albumRepository.fetchAlbumList()
+                uiStateFlow.value = Idle
             } catch (e: Exception) {
                 uiStateFlow.value = Error("Something went wrong")
             }
@@ -46,5 +53,4 @@ sealed interface UiState
 
 object Idle : UiState
 object Loading : UiState
-data class Results(val albums: List<Album>) : UiState
 data class Error(val message: String) : UiState

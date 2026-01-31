@@ -4,9 +4,9 @@ import com.example.domain.model.Album
 import kotlinx.coroutines.flow.Flow
 
 interface AlbumRepository {
-    suspend fun fetchAlbumList():List<Album>
+    suspend fun fetchAlbumList()
 
     suspend fun saveAlbum(id: String)
 
-    fun getSavedAlbums(): Flow<List<Album>>
+    fun getAlbumList(): Flow<List<Album>>
 }

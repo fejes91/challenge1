@@ -6,22 +6,33 @@ import com.example.domain.model.Album
 import com.example.domain.repository.AlbumRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 internal class DefaultAlbumRepository @Inject constructor(
     private val appleRSSApi: AppleRSSApi
 ) : AlbumRepository {
+    private val albumList = MutableStateFlow<List<Album>>(emptyList())
+
+    // TODO use datastore
+    private val savedAlbumIds = MutableStateFlow<List<String>>(emptyList())
 
     override suspend fun fetchAlbumList() = withContext(Dispatchers.IO) {
-        appleRSSApi.fetchTop100GermanAlbums()
+        albumList.value = appleRSSApi.fetchTop100GermanAlbums()
             .feed.results.map { it.toDomainModel() }
     }
 
     override suspend fun saveAlbum(id: String) = withContext(Dispatchers.IO) {
-
+        savedAlbumIds.update {
+            it.toMutableList() + id
+        }
     }
 
-    override fun getSavedAlbums(): Flow<List<Album>> = flowOf(emptyList())
+    override fun getAlbumList(): Flow<List<Album>> = savedAlbumIds.combine(albumList) { savedIds, all ->
+        all.map { it.copy(isSaved = savedIds.contains(it.id)) }
+    }
+
 }
