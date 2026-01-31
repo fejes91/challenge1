@@ -8,6 +8,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -31,8 +33,12 @@ internal class DefaultAlbumRepository @Inject constructor(
         }
     }
 
-    override fun getAlbumList(): Flow<List<Album>> = savedAlbumIds.combine(albumList) { savedIds, all ->
-        all.map { it.copy(isSaved = savedIds.contains(it.id)) }
-    }
+    override fun getAlbumList(): Flow<List<Album>> =
+        savedAlbumIds.combine(albumList) { savedIds, all ->
+            all.map { it.copy(isSaved = savedIds.contains(it.id)) }
+        }
+
+    override fun getAlbumById(id: String): Flow<Album?> =
+        albumList.map { albums -> albums.firstOrNull { it.id == id } }
 
 }

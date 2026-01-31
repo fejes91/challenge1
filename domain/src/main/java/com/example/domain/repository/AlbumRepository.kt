@@ -9,4 +9,6 @@ interface AlbumRepository {
     suspend fun saveAlbum(id: String)
 
     fun getAlbumList(): Flow<List<Album>>
+
+    fun getAlbumById(id: String): Flow<Album?>
 }
