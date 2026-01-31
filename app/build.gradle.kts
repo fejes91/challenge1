@@ -27,6 +27,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "BASE_URL", "\"https://rss.marketingtools.apple.com/api/v2/\"")
+        }
+
+        debug {
+            buildConfigField("String", "BASE_URL", "\"https://rss.marketingtools.apple.com/api/v2/\"")
         }
     }
     compileOptions {
@@ -38,12 +43,15 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
 
 dependencies {
     implementation(project(":navigation"))
+    implementation(project(":data"))
+    implementation(project(":domain"))
     implementation(project(":albumlist"))
     implementation(project(":albumdetails"))
 
