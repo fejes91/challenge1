@@ -49,9 +49,9 @@ fun Challenge1Theme(
         else -> LightColorScheme
     }
 
-//    MaterialTheme(
-//        colorScheme = colorScheme,
-//        typography = Typography,
-//        content = content
-//    )
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = Typography,
+        content = content
+    )
 }

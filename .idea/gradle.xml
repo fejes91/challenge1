@@ -10,6 +10,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/albumdetails" />
             <option value="$PROJECT_DIR$/albumlist" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/navigation" />

@@ -1,13 +1,13 @@
 plugins {
     alias(libs.plugins.android.library)
-
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.kotlin.android)
 }
 
 android {
-    namespace = "com.example.navigation"
+    namespace = "com.example.albumdetails"
     compileSdk {
         version = release(36)
     }
@@ -46,5 +46,14 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(libs.dagger.hilt.android)
+    implementation(libs.dagger.hilt.navigation)
     ksp(libs.dagger.hilt.compiler)
+
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3)
 }

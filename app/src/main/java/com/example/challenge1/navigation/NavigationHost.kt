@@ -8,6 +8,8 @@ import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDe
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.example.albumdetails.ui.AlbumDetailsScreen
+import com.example.albumlist.ui.AlbumListScreen
 import com.example.navigation.route.AlbumDetailsScreenRoute
 import com.example.navigation.route.AlbumListScreenRoute
 
@@ -29,11 +31,11 @@ fun NavigationHost(viewModel: NavigatorViewModel = hiltViewModel()) {
         entryProvider = { key ->
             when (key) {
                 is AlbumListScreenRoute -> NavEntry(key) {
-                    @Composable {}
+                    AlbumListScreen()
                 }
 
                 is AlbumDetailsScreenRoute -> NavEntry(key) {
-                    @Composable {}
+                    AlbumDetailsScreen()
                 }
             }
         }

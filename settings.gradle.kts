@@ -23,3 +23,4 @@ rootProject.name = "Challenge1"
 include(":app")
 include(":navigation")
 include(":albumlist")
+include(":albumdetails")
