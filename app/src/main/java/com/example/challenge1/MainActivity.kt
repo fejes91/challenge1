@@ -4,7 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.example.challenge1.navigation.NavigationHost
@@ -18,8 +22,13 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Challenge1Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    NavigationHost()
+                Scaffold(modifier = Modifier
+                    .statusBarsPadding()
+                    .navigationBarsPadding()
+                    .fillMaxSize()) { innerPadding ->
+                    Box(Modifier.padding(innerPadding)) {
+                        NavigationHost()
+                    }
                 }
             }
         }
