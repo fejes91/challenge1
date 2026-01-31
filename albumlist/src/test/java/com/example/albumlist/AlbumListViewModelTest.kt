@@ -37,6 +37,8 @@ internal class AlbumListViewModelTest {
 
     @Test
     fun viewModelCallsRepositoryOnCreation() = runTest {
+        every { albumRepository.getAlbumList() } returns flowOf(listOf(mockk<Album>(relaxed = true)))
+
         createSut()
 
         coEvery { albumRepository.fetchAlbumList() }
@@ -51,6 +53,7 @@ internal class AlbumListViewModelTest {
         val sut = createSut()
 
         sut.albums.test {
+            awaitItem()
             val result = awaitItem()
 
             assertEquals(result.size, 1)
